@@ -1,4 +1,5 @@
 require 'date'
+require 'active_support/inflector'
 
 def input_students
     months = Date::MONTHNAMES
@@ -21,7 +22,8 @@ def input_students
     
     while !name.empty? || !answer.empty? do
         students << {name: name, cohort: cohort}
-        puts "Now we have #{students.count} students\n"
+        students.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
+        puts "Now we have #{students.count} #{no_of_st}\n\n"
         
         puts "Please enter the names of the students"
         name = gets.strip.capitalize()
@@ -48,7 +50,8 @@ def print_header
 end
 
 def print_footer(names)
-    puts "Overall, we have #{names.count} great students"
+    names.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
+    puts "Overall, we have #{names.count} great #{no_of_st}"
 end
 
 students = input_students

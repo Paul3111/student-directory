@@ -51,9 +51,13 @@ def print_footer(names)
 end
 
 def print(students)
-  students.each.with_index(1) do |student, index|
-    puts "#{index} #{student[:name]} (#{student[:cohort]} cohort)"
-  end
+    puts "What is the letter you wish to select?"
+    letter = gets.chomp
+    students.each.with_index(1) do |student, index|
+        if student[:name].chr.upcase == letter.upcase
+            puts "#{index} #{student[:name]} (#{student[:cohort]} cohort)"
+        end
+end
 end
 
 print_header

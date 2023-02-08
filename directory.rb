@@ -28,17 +28,17 @@
 #print_footer(students)
 
 students = [
-  {name: "Dr. Hannibal Lecter", cohort: :november},
-  {name: "Darth Vader", cohort: :november},
-  {name: "Nurse Ratched", cohort: :november},
-  {name: "Michael Corleone", cohort: :november},
-  {name: "Alex DeLarge", cohort: :november},
-  {name: "The Wicked Witch of the West", cohort: :november},
-  {name: "Terminator", cohort: :november},
-  {name: "Freddy Krueger", cohort: :november},
-  {name: "The Joker", cohort: :november},
-  {name: "Joffrey Baratheon", cohort: :november},
-  {name: "Norman Bates", cohort: :november}
+  {name: "Dr. Hannibal Lecter", cohort: :november, cob: "UK"},
+  {name: "Darth Vader", cohort: :november, cob: "Galactia"},
+  {name: "Nurse Ratched", cohort: :november, cob: "Switzerland"},
+  {name: "Michael Corleone", cohort: :november, cob: "Italy"},
+  {name: "Alex DeLarge", cohort: :november, cob: "UK"},
+  {name: "The Wicked Witch of the West", cohort: :november, cob: "N/A"},
+  {name: "Terminator", cohort: :november, cob: "Future Land"},
+  {name: "Freddy Krueger", cohort: :november, cob: "USA"},
+  {name: "The Joker", cohort: :november, cob: "USA"},
+  {name: "Joffrey Baratheon", cohort: :november, cob: "UK"},
+  {name: "Norman Bates", cohort: :november, cob: "Norway"}
 ]
 
 def print_header
@@ -53,7 +53,8 @@ end
 def print(students)
     counter = 0
     while counter < students.length
-        puts "#{students[counter][:name]} (#{students[counter][:cohort]} cohort)"
+        puts "#{students[counter][:name]} 
+        (#{students[counter][:cohort]} cohort) - #{students[counter][:cob]}"
         counter += 1
     end
 end

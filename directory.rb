@@ -54,7 +54,7 @@ def print(students)
     counter = 0
     while counter < students.length
         puts "#{students[counter][:name]} 
-        (#{students[counter][:cohort]} cohort) - #{students[counter][:cob]}"
+        (#{students[counter][:cohort].to_s.center(14)} cohort) - #{students[counter][:cob].center(15)}"
         counter += 1
     end
 end

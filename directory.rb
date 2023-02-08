@@ -54,7 +54,15 @@ def print_footer(names)
     puts "Overall, we have #{names.count} great #{no_of_st}"
 end
 
-students = input_students
-print_header
-puts(students)
-print_footer(students)
+def run
+    students = input_students
+    if students.length == 0
+        puts "There is nothing to print"
+    else
+        print_header
+        puts(students)
+        print_footer(students)
+    end
+end
+
+run

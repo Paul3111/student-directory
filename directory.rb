@@ -1,19 +1,16 @@
-#cohorts_list = ["JANUARY","FEBRUARY","MARCH","APRIL","MAY","JUNE","JULY",
-#    "AUGUST","SEPTEMBER","OCTOBER","NOVEMBER","DECEMBER"]
-
 require 'date'
 
 def input_students
     months = Date::MONTHNAMES
     puts "Please enter the names of the students"
-    name = gets.chomp.capitalize()
+    name = gets.strip.capitalize()
     puts "Please enter the cohort"
-    answer = gets.chomp.capitalize()
+    answer = gets.strip.capitalize()
     answer == "" ? cohort = "February" : cohort = answer
     while true do
         if months.include?(answer) == false && !answer.empty?
             puts "There is a typo in the cohort name"
-            answer = gets.chomp.capitalize()
+            answer = gets.strip.capitalize()
             answer == "" ? cohort = "February" : cohort = answer
         else
             break
@@ -27,14 +24,14 @@ def input_students
         puts "Now we have #{students.count} students\n"
         
         puts "Please enter the names of the students"
-        name = gets.chomp.capitalize()
+        name = gets.strip.capitalize()
         puts "Please enter the cohort"
-        answer = gets.chomp.capitalize()
+        answer = gets.strip.capitalize()
         answer == "" ? cohort = "February" : cohort = answer
         while true do
             if months.include?(answer) == false && !answer.empty?
                 puts "There is a typo in the cohort name"
-                answer = gets.chomp.capitalize()
+                answer = gets.strip.capitalize()
                 answer == "" ? cohort = "February" : cohort = answer
             else
                 break

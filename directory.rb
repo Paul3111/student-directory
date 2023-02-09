@@ -123,7 +123,7 @@ def load_students
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
         @students << {name: name, cohort: cohort.to_sym}
-        puts @students
+        puts line
     end
     file.close
 end

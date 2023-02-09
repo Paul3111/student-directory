@@ -1,6 +1,8 @@
 require 'date'
 require 'active_support/inflector'
 
+@students = []
+
 def input_students
     months = Date::MONTHNAMES
     puts "Please enter the names of the students"
@@ -18,14 +20,13 @@ def input_students
         end
     end
     puts "To finish, just hit return twice\n\n"
-    students = []
     cohorts = []
     
     while !name.empty? || !answer.empty? do
-        students << {name: name, cohort: cohort}
+        @students << {name: name, cohort: cohort}
         cohorts << cohort
-        students.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
-        puts "Now we have #{students.count} #{no_of_st}\n\n"
+        @students.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
+        puts "Now we have #{@students.count} #{no_of_st}\n\n"
         
         puts "Please enter the names of the students"
         name = gets.strip.capitalize()
@@ -43,7 +44,7 @@ def input_students
         end
         puts "To finish, just hit return twice\n\n"
     end
-    return students, cohorts.uniq
+    return @students, cohorts.uniq
 end
 
 def print_header
@@ -56,40 +57,48 @@ def print_footer(names)
     puts "\n\nOverall, we have #{names.count} great #{no_of_st}"
 end
 
-def interactive_menu
-    students = []
-    loop do
-        puts "1. Input the students"
-        puts "2. Show the students"
-        puts "9. Exit"
-
-        selection = gets.chomp
-        
-        case selection
-        when "1"
-            students = input_students
-        when "2"
-            students_list = []
-            if students[0] == nil || students[0].count == 0
-                puts "There is nothing to print"
-            else
-                print_header
-                students[1].each do |cohort|
-                    students[0].each do |student|
-                        if student[:cohort] == cohort
-                            students_list << [student[:cohort], student[:name]]
-                            students[0].delete(student)
-                        end
-                    end
-                end
-                print students_list
-                print_footer(students_list)
+def show_students
+    print_header
+    students_list = []
+    @students[1].each do |cohort|
+        @students[0].each do |student|
+            if student[:cohort] == cohort
+                students_list << [student[:cohort], student[:name]]
+                @students[0].delete(student)
             end
-        when "9"
-            exit
-        else
-            puts "I don't know what you meant, try again"
         end
+    end
+    print students_list
+    print_footer(students_list)
+end
+
+def print_menu
+    puts "1. Input the students"
+    puts "2. Show the students"
+    puts "9. Exit"
+end
+
+def process(selection)
+    case selection
+    when "1"
+        @students = input_students
+    when "2"
+        if @students[0] == nil || @students[0].count == 0
+            puts "There is nothing to print"
+        else
+            show_students
+        end
+    when "9"
+        exit
+    else
+        puts "I don't know what you meant, try again"
+    end
+end
+
+def interactive_menu
+    loop do
+        print_menu
+        process(gets.chomp)
     end
 end
 

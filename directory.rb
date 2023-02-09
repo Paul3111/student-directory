@@ -17,11 +17,13 @@ def input_students
             break
         end
     end
-    puts "To finish, just hit return twice"
+    puts "To finish, just hit return twice\n\n"
     students = []
+    cohorts = []
     
     while !name.empty? || !answer.empty? do
         students << {name: name, cohort: cohort}
+        cohorts << cohort
         students.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
         puts "Now we have #{students.count} #{no_of_st}\n\n"
         
@@ -39,9 +41,9 @@ def input_students
                 break
             end
         end
-        puts "To finish, just hit return twice"
+        puts "To finish, just hit return twice\n\n"
     end
-    students
+    return students, cohorts.uniq
 end
 
 def print_header
@@ -51,18 +53,44 @@ end
 
 def print_footer(names)
     names.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
-    puts "Overall, we have #{names.count} great #{no_of_st}"
+    puts "\n\nOverall, we have #{names.count} great #{no_of_st}"
 end
 
-def run
-    students = input_students
-    if students.length == 0
-        puts "There is nothing to print"
-    else
-        print_header
-        puts(students)
-        print_footer(students)
+def interactive_menu
+    students = []
+    loop do
+        puts "1. Input the students"
+        puts "2. Show the students"
+        puts "9. Exit"
+
+        selection = gets.chomp
+        
+        case selection
+        when "1"
+            students = input_students
+        when "2"
+            students_list = []
+            if students[0] == nil || students[0].count == 0
+                puts "There is nothing to print"
+            else
+                print_header
+                students[1].each do |cohort|
+                    students[0].each do |student|
+                        if student[:cohort] == cohort
+                            students_list << [student[:cohort], student[:name]]
+                            students[0].delete(student)
+                        end
+                    end
+                end
+                print students_list
+                print_footer(students_list)
+            end
+        when "9"
+            exit
+        else
+            puts "I don't know what you meant, try again"
+        end
     end
 end
 
-run
+interactive_menu

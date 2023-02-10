@@ -6,14 +6,14 @@ require 'active_support/inflector'
 def input_students
     months = Date::MONTHNAMES
     puts "Please enter the names of the students"
-    name = gets.strip.capitalize()
+    name = STDIN.gets.strip.capitalize()
     puts "Please enter the cohort"
-    answer = gets.strip.capitalize()
+    answer = STDIN.gets.strip.capitalize()
     answer == "" ? cohort = "February" : cohort = answer
     while true do
         if months.include?(answer) == false && !answer.empty?
             puts "There is a typo in the cohort name"
-            answer = gets.strip.capitalize()
+            answer = STDIN.gets.strip.capitalize()
             answer == "" ? cohort = "February" : cohort = answer
         else
             break
@@ -29,14 +29,14 @@ def input_students
         puts "Now we have #{@students.count} #{no_of_st}\n\n"
         
         puts "Please enter the names of the students"
-        name = gets.strip.capitalize()
+        name = STDIN.gets.strip.capitalize()
         puts "Please enter the cohort"
-        answer = gets.strip.capitalize()
+        answer = STDIN.gets.strip.capitalize()
         answer == "" ? cohort = "February" : cohort = answer
         while true do
             if months.include?(answer) == false && !answer.empty?
                 puts "There is a typo in the cohort name"
-                answer = gets.strip.capitalize()
+                answer = STDIN.gets.strip.capitalize()
                 answer == "" ? cohort = "February" : cohort = answer
             else
                 break
@@ -93,7 +93,7 @@ def process(selection)
     when "3"
         save_students
     when "4"
-        load_students
+        try_load_students
     when "9"
         exit
     else
@@ -103,8 +103,9 @@ end
 
 def interactive_menu
     loop do
+        try_load_students
         print_menu
-        process(gets.chomp)
+        process(STDIN.gets.chomp)
     end
 end
 
@@ -118,14 +119,26 @@ def save_students
     file.close
 end
 
-def load_students
-    file = File.open("students.csv", "r")
+def load_students(filename = "students.csv")
+    file = File.open(filename, "r")
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
         @students << {name: name, cohort: cohort.to_sym}
         puts line
     end
     file.close
+end
+
+def try_load_students
+  filename = ARGV.first
+  return if filename.nil?
+  if File.exist?(filename)
+    load_students(filename)
+    puts "Loaded #{@students.count} from #{filename}"
+  else
+    puts "Sorry, #{filename} doesn't exist."
+    exit
+  end
 end
 
 interactive_menu

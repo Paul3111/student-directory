@@ -23,7 +23,7 @@ def input_students
     cohorts = []
     
     while !name.empty? || !answer.empty? do
-        @students << {name: name, cohort: cohort}
+        add_students(name, cohort)
         cohorts << cohort
         @students.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
         puts "Now we have #{@students.count} #{no_of_st}\n\n"
@@ -53,23 +53,23 @@ def print_header
 end
 
 def print_footer(names)
-    names.count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
-    puts "\n\nOverall, we have #{names.count} great #{no_of_st}"
+    names[0].count > 1 ? no_of_st = "student".pluralize : no_of_st = "student"
+    puts "\n\nOverall, we have #{names[0].count} great #{no_of_st}"
 end
 
 def show_students
     print_header
-    students_list = []
+    students_list = @students
     @students[1].each do |cohort|
         @students[0].each do |student|
-            if student[:cohort] == cohort
+            if student[:cohort] == cohort.to_sym
                 students_list << [student[:cohort], student[:name]]
                 @students[0].delete(student)
             end
         end
     end
-    print students_list
-    print_footer(students_list)
+    print @students
+    print_footer(@students)
 end
 
 def print_menu
@@ -83,18 +83,23 @@ end
 def process(selection)
     case selection
     when "1"
+        puts "You selected 1. Input the students"
         @students = input_students
     when "2"
         if @students[0] == nil || @students[0].count == 0
             puts "There is nothing to print"
         else
+            puts "You selected 2. Show the students"
             show_students
         end
     when "3"
+        puts "You selected 3. Save the list to students.csv"
         save_students
     when "4"
-        try_load_students
+        puts "You selected 4. Load the list from student.csv"
+        load_students
     when "9"
+        puts "9. The program will now end"
         exit
     else
         puts "I don't know what you meant, try again"
@@ -111,10 +116,10 @@ end
 
 def save_students
     file = File.open("students.csv", "w")
-    @students[0].each do |student|
-        student_data = [student[:name], student[:cohort]]
-        csv_line = student_data.join(",")
-        file.puts csv_line
+    if @students.empty?
+        puts "There is nothing to add!"
+    else
+        file.puts @students[0].map {|student| student[:name] + "," + student[:cohort]}    
     end
     file.close
 end
@@ -123,13 +128,13 @@ def load_students(filename = "students.csv")
     file = File.open(filename, "r")
     file.readlines.each do |line|
         name, cohort = line.chomp.split(",")
-        @students << {name: name, cohort: cohort.to_sym}
+        add_students(name, cohort)
         puts line
     end
     file.close
 end
 
-def try_load_students
+def try_load_students(filename = "students.csv")
   filename = ARGV.first
   return if filename.nil?
   if File.exist?(filename)
@@ -139,6 +144,11 @@ def try_load_students
     puts "Sorry, #{filename} doesn't exist."
     exit
   end
+end
+
+def add_students(stud_name, cohort_name)
+    @students << {name: stud_name, cohort: cohort_name}
+    return @students
 end
 
 interactive_menu
